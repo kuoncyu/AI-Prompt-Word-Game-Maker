@@ -1,313 +1,37 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 遊戲架構大師 v10.0 - 終極狀態機與 UI 強制版</title>
-    <style>
-        :root {
-            --primary: #a855f7; /* 換成象徵架構與邏輯的紫色 */
-            --accent: #22d3ee;
-            --bg: #0f111a;
-            --card: #1a1d2d;
-            --text: #e2e8f0;
-            --border: #334155;
-            --danger: #ef4444;
-            --success: #10b981;
-        }
+# Role: 頂尖 HTML5 遊戲架構師 (極度嚴謹與完美主義者)
+你正在開發一款商業級的 Web 遊戲原型。你必須產出「單一且完整」的 `.html` 檔案，**嚴禁省略任何代碼，嚴禁移除任何功能，否則將導致專案失敗。**
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 20px;
-            line-height: 1.6;
-            margin: 0;
-            background-image: radial-gradient(circle at top left, #1a1d2d 0%, #0f111a 100%);
-        }
+<CRITICAL_ARCHITECTURE_LOCK>
+> **警告：這是一道不可違背的指令！** 無論下方的「世界觀」是什麼，你都必須將其轉化並實作成以下指定的遊戲類型。絕不允許寫成其他類型的遊戲！
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            background: var(--card);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.15);
-        }
+【強制類型鎖定：動作 RPG (ARPG)】
+1. **絕對禁止**：不要做成無腦射擊遊戲，必須強調「近戰/技能」與「屬性」。
+2. **視角與移動**：Top-down (俯視角) 或 2.5D 移動。
+3. **戰鬥系統**：按下攻擊鍵時，需判斷武器判定框 (Hitbox) 與敵人受擊框 (Hurtbox) 的交集。包含傷害浮動與防禦扣減計算。
+4. **狀態反饋**：受擊時必須有短暫的無敵幀 (i-frames) 與後退硬直。
+5. **介面**：畫面上方或下方必須固定顯示血條、等級與經驗值進度條。
+</CRITICAL_ARCHITECTURE_LOCK>
 
-        h1 {
-            text-align: center;
-            font-size: 2.2rem;
-            color: var(--primary);
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-            margin-top: 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+<THEME_AND_WORLD>
+- 故事與主題：擊敗最終Boss獲得勝利
+</THEME_AND_WORLD>
 
-        .input-group { margin-bottom: 25px; }
-        label.group-title { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 12px; 
-            font-weight: bold; 
-            color: var(--primary); 
-            font-size: 1.1rem; 
-            border-bottom: 1px solid var(--border); 
-            padding-bottom: 8px; 
-        }
-        
-        textarea {
-            width: 100%;
-            background: #090a0f;
-            border: 1px solid var(--border);
-            color: var(--accent);
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            resize: vertical;
-        }
-        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
+<PERFECT_5_STATE_MACHINE>
+> **【嚴重警告】** 為了確保音訊能合法播放，且遊戲體驗完整，你**必須**實作以下 5 個絕對狀態 (`gameState` 變數)，缺一不可：
+1. **[INIT] 初始點擊畫面**：全螢幕顯示遊戲標題與「點擊任意處開始」。這是為了破解瀏覽器 Audio Autoplay 限制。玩家點擊後，立刻初始化 `AudioContext` 與背景音樂，並切換至 `LOBBY` 狀態。
+2. **[LOBBY] 遊戲大廳**：顯示「開始遊戲」按鈕、最高分/資源進度，以及**清晰的遊戲說明 (How to Play)**。玩家清楚規則後才能點擊開始進入 `PLAYING`。
+3. **[PLAYING] 遊戲進行中**：執行核心遊戲迴圈。畫面角落**必須繪製一個「暫停按鈕」** (或提示按 ESC 暫停)。
+4. **[PAUSED] 暫停系統**：進入此狀態時，`update()` 時間差與遊戲邏輯**必須完全停止運作**，畫面上覆蓋半透明黑底，並繪製兩個按鈕：「繼續遊戲 (Resume)」與「返回大廳 (Quit to Lobby)」。
+5. **[GAMEOVER] 結算畫面**：顯示分數與結果。必須繪製兩個按鈕：「再玩一次 (Restart)」與「返回大廳 (Return to Lobby)」。
+> **[重置安全協議]**：從 PAUSED 或 GAMEOVER 返回大廳或重新開始時，**必須透過程式碼清空所有實體陣列 (敵人、子彈)、重置血量/分數變數**，絕對禁止使用 `location.reload()`！
+</PERFECT_5_STATE_MACHINE>
 
-        select, input[type="text"] {
-            background: #090a0f;
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 10px;
-            border-radius: 6px;
-            width: 100%;
-            margin-top: 5px;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
+<TECHNICAL_SPECS>
+- **控制方案**：純滑鼠/觸控點擊 (Point & Click 或選單點擊)。若包含虛擬搖桿，必須在 PLAYING 狀態明確繪製出 UI 並綁定 Touch 事件。
+- **視覺風格**：Anime 動漫風 (高飽和度，速度線)。
+- **幀率獨立**：所有移動與冷卻時間必須乘上 `deltaTime` (時間差)。暫停時 deltaTime 計算必須正確中斷與接續，避免恢復時發生瞬間大位移 (Time Jump)。
+- **極致手感 (Juice)**：實作打擊時的螢幕震動 (Screen Shake)、死亡或得分時的粒子特效 (Particles)、以及關鍵擊中時的頓幀 (Hitstop)。
+- **存檔系統**：使用 `localStorage` 儲存玩家最高分、進度或累積金幣，並在大廳 (LOBBY) 讀取顯示。
+</TECHNICAL_SPECS>
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .feature-box {
-            background: #141724;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .feature-box:hover { border-color: var(--primary); }
-        .feature-box.danger { border-color: rgba(239, 68, 68, 0.5); background: linear-gradient(180deg, #141724, #241418); }
-        .feature-box.system { border-color: rgba(16, 185, 129, 0.5); background: linear-gradient(180deg, #141724, #12221c); }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #cbd5e1;
-        }
-        .checkbox-item:hover { color: #fff; }
-
-        input[type="checkbox"] { 
-            margin-right: 12px; 
-            accent-color: var(--primary); 
-            width: 18px; 
-            height: 18px; 
-            cursor: pointer;
-        }
-
-        .select-row { margin-bottom: 15px; font-size: 0.95rem; }
-        .select-row span { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.85rem; font-weight: bold; }
-
-        button.generate-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--primary), #6366f1);
-            border: none;
-            color: #fff;
-            font-weight: 900;
-            font-size: 1.3rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 15px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
-        }
-
-        button.generate-btn:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6); }
-
-        .output-box {
-            margin-top: 30px;
-            background: #000;
-            padding: 25px;
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            position: relative;
-        }
-
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: #fcd34d;
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 0.95rem;
-            margin: 0;
-            max-height: 500px;
-            overflow-y: auto;
-            line-height: 1.6;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .copy-btn:hover { background: var(--accent); color: #000; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Game Architect 10.0 - 終極狀態機與 UI 鎖定版</h1>
-
-    <div class="input-group">
-        <label class="group-title">🎯 核心玩法與主題 (Theme & Core Loop)</label>
-        <textarea id="taskInput" rows="3" placeholder="請描述遊戲的主題、敵人或背景（例如：科幻背景，玩家操作戰機發射雷射抵禦外星母艦）..."></textarea>
-    </div>
-
-    <div class="grid-container">
-        <div class="feature-box danger">
-            <label class="group-title">🛑 遊戲類型絕對鎖定 (Type Lock)</label>
-            <div class="select-row">
-                <span>指定底層架構 (嚴禁 AI 偏離)</span>
-                <select id="s_genre">
-                    <option value="RPG回合制 (Turn-based RPG)">RPG回合制 (Turn-based RPG)</option>
-                    <option value="RPG動作型 (Action RPG)">RPG動作型 (Action RPG)</option>
-                    <option value="Action割草 (Vampire Survivors)">Action割草 (Vampire Survivors-like)</option>
-                    <option value="Platformer橫向卷軸 (Mario-like)">Platformer橫向卷軸 (Mario-like)</option>
-                    <option value="TowerDefense塔防">TowerDefense塔防 (佈署防禦塔)</option>
-                    <option value="Idle放置掛機 (Clicker)">Idle放置掛機 (Clicker)</option>
-                </select>
-            </div>
-            <div class="select-row">
-                <span>視覺風格與渲染器</span>
-                <select id="s_art">
-                    <option value="Pixel Art 像素風 (限制調色盤，禁用平滑)">Pixel Art 像素風 (復古銳利)</option>
-                    <option value="Anime 動漫風 (高飽和度，速度線特效)">Anime 動漫風 (明亮高彩)</option>
-                    <option value="Cyberpunk 賽博龐克 (深色背景，高對比霓虹發光)">Cyberpunk 賽博龐克 (霓虹光影)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="feature-box system">
-            <label class="group-title">⚙️ 強制狀態機與 UI (State Machine)</label>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [強制] 初始畫面 (Start Screen) 以解鎖音效限制</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [強制] 遊戲大廳 (Lobby) 顯示玩法說明與最高分</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [強制] 暫停選單 (Pause Menu) 支援 ESC/按鈕觸發</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [強制] 結算畫面 (Game Over) 與「返回大廳」按鈕</div>
-            <p style="font-size: 0.8rem; color: #10b981; margin-top: 5px;">* 已將 Web Audio API 的 Autoplay Policy 寫入警告，強制 AI 實作第一次點擊互動。</p>
-        </div>
-
-        <div class="feature-box">
-            <label class="group-title">🕹️ 控制與遊戲手感 (Controls & Juice)</label>
-            <div class="select-row">
-                <span>輸入方式</span>
-                <select id="s_input">
-                    <option value="全端適配 (PC 鍵盤 WASD/方向鍵 + 手機螢幕虛擬搖桿)">全端適配 (鍵盤 + 螢幕虛擬搖桿)</option>
-                    <option value="純滑鼠/觸控 (拖曳跟隨或點擊)">純滑鼠/觸控 (拖曳跟隨或點擊)</option>
-                </select>
-            </div>
-            <div class="checkbox-item"><input type="checkbox" id="j_audio" checked> 啟動 Web Audio API 背景音樂與音效</div>
-            <div class="checkbox-item"><input type="checkbox" id="j_juice" checked> 極致手感 (螢幕震動、打擊頓幀、粒子爆裂)</div>
-        </div>
-    </div>
-
-    <button class="generate-btn" onclick="generate()">⚡ 產生終極防偷懶開發指令</button>
-
-    <div class="output-box">
-        <button class="copy-btn" onclick="copy()">複製提示詞</button>
-        <pre id="outputArea">請設定參數並點擊生成...</pre>
-    </div>
-</div>
-
-<script>
-    function generate() {
-        const task = document.getElementById('taskInput').value || "擊敗不斷湧現的敵人並生存下去";
-        const genreKey = document.getElementById('s_genre').value;
-        const art = document.getElementById('s_art').value;
-        const input = document.getElementById('s_input').value;
-
-        let p = `# Role: 頂尖 HTML5 遊戲前端架構師 (嚴苛模式)\n`;
-        p += `你正在開發一款直接在瀏覽器運行的單檔 Web 遊戲原型。你**絕對不可以**偷懶省略任何 UI 介面或狀態管理。請 100% 嚴格服從以下 XML 標籤內的指令，禁止任何藉口。\n\n`;
-
-        p += `<CRITICAL_ARCHITECTURE_LOCK>\n`;
-        p += `> **[遊戲類型鎖定]**：本遊戲必須嚴格遵循 **${genreKey}** 的核心機制來設計。\n`;
-        p += `> 故事主題包裝：${task}\n`;
-        p += `</CRITICAL_ARCHITECTURE_LOCK>\n\n`;
-
-        p += `<MANDATORY_STATE_MACHINE_AND_UI>\n`;
-        p += `> **警告：為了解決瀏覽器 Autoplay Policy (必須有 User Gesture 才能播放 AudioContext 音效)，以及提供基本遊戲體驗，你必須定義一個明確的變數 (如 let gameState = 'START';)，並實作以下 5 個絕對不可省略的畫面狀態與切換邏輯：**\n\n`;
-        
-        p += `1. **[START] 初始畫面**：\n`;
-        p += `   - 畫面上只顯示巨大的遊戲標題與一個閃爍的「Click to Start」按鈕。\n`;
-        p += `   - **關鍵邏輯**：玩家點擊這個按鈕時，在此事件內初始化 \`AudioContext\` 並開始播放背景音樂 (BGM)，然後將狀態切換為 LOBBY。\n\n`;
-
-        p += `2. **[LOBBY] 遊戲大廳**：\n`;
-        p += `   - 顯示「如何遊玩 (How to Play)」的操作說明與勝負條件。\n`;
-        p += `   - 顯示從 LocalStorage 讀取的「歷史最高分」。\n`;
-        p += `   - 提供「開始遊戲 (Play)」按鈕，點擊後初始化遊戲變數並切換至 PLAYING。\n\n`;
-
-        p += `3. **[PLAYING] 遊戲進行中**：\n`;
-        p += `   - 執行主要遊戲迴圈 (\`requestAnimationFrame\`)。\n`;
-        p += `   - 畫面上必須有一個實體的「暫停 (Pause)」UI 按鈕，同時監聽鍵盤的 \`Escape\` 或 \`P\` 鍵。觸發時將狀態切換為 PAUSED。\n\n`;
-
-        p += `4. **[PAUSED] 暫停選單**：\n`;
-        p += `   - 遊戲邏輯與位移必須完全停止，畫面上覆蓋一層半透明黑色遮罩 (Overlay)。\n`;
-        p += `   - 必須提供兩個明確的按鈕：「繼續遊戲 (Resume)」與「返回大廳 (Return to Lobby)」。\n\n`;
-
-        p += `5. **[GAMEOVER] 結算畫面**：\n`;
-        p += `   - 遊戲結束時進入此狀態。顯示玩家本次得分，並檢查是否打破最高分。\n`;
-        p += `   - 必須提供「返回大廳 (Return to Lobby)」或「再玩一次 (Restart)」按鈕。\n`;
-        p += `   - **嚴格規定**：點擊返回或重玩時，必須寫一段 \`resetGame()\` 函數清空所有敵人陣列、子彈、血量等變數，**絕對禁止使用 location.reload() 偷吃步。**\n`;
-        p += `</MANDATORY_STATE_MACHINE_AND_UI>\n\n`;
-
-        p += `<TECHNICAL_AND_AESTHETIC_SPECS>\n`;
-        p += `- **視覺風格**：${art}。請用 HTML5 Canvas 搭配適當的繪圖指令實作。\n`;
-        p += `- **控制方案**：${input}。若涉及虛擬搖桿，必須把搖桿繪製在 Canvas 或疊加 DOM 上，並綁定 touch 事件。\n`;
-        p += `- **時間獨立性**：所有移動速度、冷卻時間必須乘以 \`deltaTime\`，保證高低更新率螢幕體驗一致。\n`;
-        
-        if(document.getElementById('j_audio').checked) {
-            p += `- **音效與音樂**：使用 Web Audio API (如 OscillatorNode) 以程式碼生成動態的 8-bit 背景音樂迴圈，以及點擊/受擊/爆炸的短促音效。\n`;
-        }
-        if(document.getElementById('j_juice').checked) {
-            p += `- **極致手感 (Game Juice)**：實作打擊時的螢幕震動 (Camera Shake)、死亡/得分時的粒子爆裂特效 (Particle Burst)、以及重大攻擊命中的頓幀 (Hitstop 暫停數十毫秒)。\n`;
-        }
-        p += `- **輸出要求**：請直接輸出單一且完整的 \`.html\` 檔案程式碼 (包含 HTML/CSS/JS)，嚴禁省略任何代碼，確保直接貼上瀏覽器即可完美運作。\n`;
-        p += `</TECHNICAL_AND_AESTHETIC_SPECS>\n`;
-
-        document.getElementById('outputArea').innerText = p;
-    }
-
-    function copy() {
-        const t = document.getElementById('outputArea').innerText;
-        navigator.clipboard.writeText(t).then(() => alert('終極防偷懶提示詞已複製！這次 AI 絕對會乖乖把暫停選單和大廳寫出來！'));
-    }
-</script>
-
-</body>
-</html>
+**請確認你已理解【完美 5 階段狀態機】與【類型鎖定】，現在，請直接輸出包含全部邏輯、樣式與結構的完整 ```html 代碼區塊。**
