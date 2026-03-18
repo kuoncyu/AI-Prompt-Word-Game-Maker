@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 遊戲架構大師 v11.0 - 經典傳奇復刻版</title>
+    <title>AI 遊戲架構大師 v12.0 - 教育神作與完整系統版</title>
     <style>
         :root {
-            --primary: #9d00ff;
-            --accent: #00f0ff;
-            --bg: #030005;
-            --card: #0d0014;
-            --text: #e0d8ea;
-            --border: #3a005c;
-            --warning: #ff0055;
+            --primary: #00ff88;
+            --accent: #ffcc00;
+            --bg: #050a08;
+            --card: #0a1410;
+            --text: #e0f0e8;
+            --border: #1a3324;
+            --warning: #ff3366;
+            --edu: #44ccff;
         }
 
         body {
@@ -22,7 +23,7 @@
             padding: 20px;
             line-height: 1.6;
             margin: 0;
-            background-image: linear-gradient(135deg, #030005 0%, #0d0014 50%, #030005 100%);
+            background-image: radial-gradient(circle at 50% 0%, #0a1a14 0%, #050a08 100%);
         }
 
         .container {
@@ -31,15 +32,15 @@
             background: var(--card);
             padding: 30px;
             border-radius: 12px;
-            border: 2px solid var(--primary);
-            box-shadow: 0 10px 50px rgba(157, 0, 255, 0.2);
+            border: 2px solid var(--border);
+            box-shadow: 0 10px 50px rgba(0, 255, 136, 0.15);
         }
 
         h1 {
             text-align: center;
             font-size: 2.2rem;
-            color: var(--accent);
-            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
             margin-top: 0;
             letter-spacing: 2px;
         }
@@ -50,7 +51,7 @@
             align-items: center; 
             margin-bottom: 12px; 
             font-weight: bold; 
-            color: var(--accent); 
+            color: var(--primary); 
             font-size: 1.1rem; 
             border-bottom: 1px solid var(--border); 
             padding-bottom: 8px; 
@@ -67,7 +68,10 @@
             box-sizing: border-box;
             resize: vertical;
         }
-        textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+
+        .edu-textarea { border-color: var(--edu); color: var(--edu); }
+        .edu-textarea:focus { border-color: var(--edu); box-shadow: 0 0 15px rgba(68, 204, 255, 0.3); }
 
         select, input[type="text"] {
             background: #000;
@@ -81,7 +85,7 @@
             font-size: 0.95rem;
         }
         
-        optgroup { color: var(--accent); font-weight: bold; background: #111; }
+        optgroup { color: var(--primary); font-weight: bold; background: #111; }
         option { color: #fff; background: #000; }
 
         .grid-container {
@@ -92,14 +96,14 @@
         }
 
         .feature-box {
-            background: #05000a;
+            background: #080f0c;
             padding: 20px;
             border-radius: 10px;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
-        .feature-box.locked { border-color: rgba(255, 0, 85, 0.6); background: linear-gradient(180deg, #1a0008, #000); }
+        .feature-box.locked { border-color: var(--warning); background: linear-gradient(180deg, #1a050a, #000); }
 
         .checkbox-item {
             display: flex;
@@ -124,7 +128,7 @@
         button.generate-btn {
             width: 100%;
             padding: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), #0099ff);
             border: none;
             color: #000;
             font-weight: 900;
@@ -137,13 +141,13 @@
             text-transform: uppercase;
         }
 
-        button.generate-btn:hover { filter: brightness(1.3); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 240, 255, 0.4); }
+        button.generate-btn:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 255, 136, 0.4); }
 
         .output-box {
             margin-top: 30px;
             background: #000;
             padding: 25px;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--primary);
             border-radius: 8px;
             position: relative;
         }
@@ -151,7 +155,7 @@
         pre {
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #00f0ff;
+            color: var(--primary);
             font-family: 'Consolas', 'Courier New', monospace;
             font-size: 0.95rem;
             margin: 0;
@@ -167,7 +171,7 @@
             padding: 8px 20px;
             font-size: 0.9rem;
             font-weight: bold;
-            background: var(--accent);
+            background: var(--primary);
             color: #000;
             border: none;
             border-radius: 4px;
@@ -180,99 +184,71 @@
 <body>
 
 <div class="container">
-    <h1>Game Architect 11.0 - 經典傳奇復刻版</h1>
+    <h1>Game Architect 12.0 - 教育神作與系統進化版</h1>
 
     <div class="input-group">
         <label class="group-title">🎯 故事換皮與美術設定 (Reskin & Lore)</label>
-        <textarea id="taskInput" rows="3" placeholder="請描述你想要的美術換皮。例如選了『瑪利歐』，這裡可寫『主角變成外星人，金幣變成能量礦石，敵人是機器狗』..."></textarea>
+        <textarea id="taskInput" rows="2" placeholder="請描述美術換皮。例如：『主角是魔法學徒，敵人是數字怪獸』..."></textarea>
+    </div>
+
+    <div class="input-group">
+        <label class="group-title" style="color: var(--edu);">📚 學科與教育融合 (Edutainment Mechanics) - 選填</label>
+        <textarea id="eduInput" class="edu-textarea" rows="2" placeholder="你想融入什麼教學？例如：『攻擊前必須先解出二位數加減法』或『地圖上要收集成語的缺字才能開門』... 若無則留空。"></textarea>
     </div>
 
     <div class="grid-container">
         <div class="feature-box">
             <label class="group-title">🕹️ 指定仿作經典遊戲 (Clone Target)</label>
             <div class="select-row">
-                <span>選擇你要精準複製底層邏輯的經典神作</span>
+                <span>選擇精準複製的底層邏輯 (RPG已強制綁定探索地圖)</span>
                 <select id="s_genre">
-                    <optgroup label="RPG 回合制角色扮演">
-                        <option value="dq">勇者鬥惡龍 (Dragon Quest) - 第一人稱視角戰鬥選單、四維屬性</option>
-                        <option value="pokemon">寶可夢 (Pokémon) - 屬性相剋、技能PP值、回合制指令</option>
-                        <option value="ff">太空戰士 (Final Fantasy) - ATB半即時回合制、我方與敵方分列左右</option>
+                    <optgroup label="RPG 角色扮演 (強制包含行走地圖)">
+                        <option value="dq">勇者鬥惡龍 (DQ) - 網格地圖探索 + 第一人稱回合戰鬥</option>
+                        <option value="pokemon">寶可夢 (Pokémon) - 網格地圖探索 + 左右對峙屬性戰鬥</option>
+                        <option value="ff">太空戰士 (FF) - 網格地圖探索 + ATB半即時回合戰鬥</option>
                     </optgroup>
                     <optgroup label="ARPG 動作角色扮演">
-                        <option value="zelda">薩爾達傳說：眾神的三角神力 - 俯視角、劍氣揮砍判定、道具解謎</option>
-                        <option value="diablo">暗黑破壞神 (Diablo) - 游標點擊移動攻擊、掉落裝備、血瓶冷卻</option>
-                        <option value="mana">聖劍傳說 (Secret of Mana) - 動作攻擊冷卻圈、環形選單</option>
+                        <option value="zelda">薩爾達傳說 - 俯視角探索、劍氣判定、道具解謎</option>
+                        <option value="diablo">暗黑破壞神 - 游標點擊移動、掉落裝備、冷卻血瓶</option>
                     </optgroup>
                     <optgroup label="Platformer 橫向平台跳躍">
-                        <option value="mario">超級瑪利歐 (Super Mario) - 踩踏判定、頂磚塊、慣性滑行</option>
-                        <option value="sonic">音速小子 (Sonic) - 基於動量的加速度、收集環防死機制</option>
-                        <option value="megaman">洛克人 (Mega Man) - 射擊與跳躍獨立、衝刺、BOSS無敵幀</option>
-                        <option value="celeste">蔚藍 (Celeste) - 嚴格土狼時間、八向衝刺、瞬間重啟</option>
-                    </optgroup>
-                    <optgroup label="Run and Gun 捲軸射擊">
-                        <option value="contra">魂斗羅 (Contra) - 八向射擊、趴下躲避、多種彈藥(散彈/雷射)</option>
-                        <option value="metalslug">越南大戰 (Metal Slug) - 射擊與近戰自動切換、手榴彈拋物線</option>
-                    </optgroup>
-                    <optgroup label="STG 飛行射擊 / 彈幕">
-                        <option value="raiden">雷電 (Raiden) - 縱向強制卷軸、跟隨飛彈、保命炸彈(Bomb)</option>
-                        <option value="1942">1942 - 縱向卷軸、迴旋閃避無敵幀</option>
-                        <option value="spaceinvaders">太空侵略者 (Space Invaders) - 網格狀敵人逼近、可破壞掩體</option>
-                        <option value="touhou">東方 Project - 判定點極小(Hitbox核心)、複雜幾何彈幕</option>
-                    </optgroup>
-                    <optgroup label="Beat 'em up 清版動作">
-                        <option value="sor">怒之鐵拳 (Streets of Rage) - Z軸(上下)走位、連段攻擊、抓技</option>
-                        <option value="goldenaxe">戰斧 (Golden Axe) - 衝刺攻擊、全螢幕魔法清場</option>
-                        <option value="doubledragon">雙截龍 (Double Dragon) - 擊飛判定、邊界掉落</option>
-                    </optgroup>
-                    <optgroup label="Tower Defense 塔防">
-                        <option value="kingdomrush">王國保衛戰 (Kingdom Rush) - 定點建塔、兵營攔截、物理與魔法護甲</option>
-                        <option value="pvz">植物大戰殭屍 (PvZ) - 網格化單線防守、向日葵產費機制</option>
-                        <option value="bloons">猴子塔防 (Bloons TD) - 氣球層數擊破機制、塔的穿透力</option>
+                        <option value="mario">超級瑪利歐 - 踩踏判定、頂磚塊、慣性滑行</option>
+                        <option value="megaman">洛克人 - 射擊與跳躍獨立、衝刺、BOSS無敵幀</option>
                     </optgroup>
                     <optgroup label="Roguelike / Survivor 割草生存">
-                        <option value="vampire">吸血鬼倖存者 (Vampire Survivors) - 自動攻擊、經驗寶石、三選一升級</option>
-                        <option value="isaac">以撒的結合 (Binding of Isaac) - 房間切換、眼淚拋物線射擊、隨機道具</option>
+                        <option value="vampire">吸血鬼倖存者 - 自動攻擊、經驗寶石、三選一升級</option>
                     </optgroup>
-                    <optgroup label="Metroidvania 銀河惡魔城">
-                        <option value="castlevania">惡魔城：月下夜想曲 - 武器後搖、後撤步、探索解鎖能力</option>
-                        <option value="metroid">密特羅德 (Metroid) - 變形球鑽洞、射擊開門、地圖探索</option>
-                    </optgroup>
-                    <optgroup label="Maze & Puzzle 迷宮與益智">
-                        <option value="pacman">小精靈 (Pac-Man) - 迷宮尋路、能量藥丸反殺機制</option>
-                        <option value="bomberman">炸彈超人 (Bomberman) - 十字火焰判定、破壞障礙物、踢炸彈</option>
-                        <option value="tetris">俄羅斯方塊 (Tetris) - 7種方塊碰撞陣列、消除整行、加速掉落</option>
-                        <option value="sokoban">推箱子 (Sokoban) - 網格碰撞、不可拉回、撤銷機制</option>
-                    </optgroup>
-                    <optgroup label="Idle & Arcade 放置與街機">
-                        <option value="cookie">餅乾點擊者 (Cookie Clicker) - 指數型價格增長、自動產出演算法</option>
-                        <option value="pong">乒乓 (Pong) - 反射角計算、隨擊球次數加速</option>
+                    <optgroup label="其他經典類型">
+                        <option value="contra">魂斗羅 (Contra) - 八向射擊、捲曲跳躍</option>
+                        <option value="raiden">雷電 (Raiden) - 縱向強制卷軸、跟隨飛彈</option>
+                        <option value="kingdomrush">王國保衛戰 (Kingdom Rush) - 塔防、兵營攔截</option>
+                        <option value="pacman">小精靈 (Pac-Man) - 迷宮尋路、無敵反殺</option>
                     </optgroup>
                 </select>
             </div>
             <div class="select-row">
                 <span>操作方式適配</span>
                 <select id="s_input">
-                    <option value="PC 鍵盤操作為主 (提示畫面需註明 WASD/方向鍵)">PC 鍵盤操作 (WASD/方向鍵 + 空白鍵)</option>
-                    <option value="全端適配 (PC 鍵盤 + 手機畫面繪製透明虛擬搖桿與按鈕)">全端適配 (PC 鍵盤 + 手機虛擬搖桿與按鈕)</option>
+                    <option value="PC 鍵盤操作為主 (提示畫面需註明 WASD/方向鍵)">PC 鍵盤操作 (WASD/方向鍵)</option>
+                    <option value="全端適配 (PC 鍵盤 + 手機畫面繪製透明虛擬搖桿與按鈕)">全端適配 (鍵盤 + 手機虛擬搖桿)</option>
                     <option value="滑鼠/觸控操作為主 (點擊移動/射擊/選單)">純滑鼠/觸控 (Point & Click)</option>
                 </select>
             </div>
         </div>
 
         <div class="feature-box locked">
-            <label class="group-title">🛡️ 鐵律：完美遊戲狀態機與功能 (不可省略)</label>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態1] INIT_SCREEN: 起始畫面 (點擊解鎖BGM)</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態2] LOBBY: 大廳 (開始/說明選單)</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態3] TUTORIAL: 動態示範動畫教學</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態4] PLAYING: 遊戲主體 + ESC暫停按鈕</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態5] PAUSED: 暫停遮罩 (繼續 / 返回大廳)</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> [狀態6] GAMEOVER: 結算重置 (程式清空，拒絕F5)</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> 核心系統: LocalStorage存檔 + deltaTime + 物件池</div>
-            <div class="checkbox-item"><input type="checkbox" checked disabled> 遊戲反饋: 螢幕震動 + 粒子特效 + 頓幀</div>
+            <label class="group-title">🛡️ 鐵律：七大完美狀態機 (不可省略)</label>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [1] INIT: 起始畫面 (點擊解鎖BGM)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [2] LOBBY: 大廳 (含開始/教學/設定 按鈕)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [3] SETTINGS: 獨立設定選單 (語言切換/音量)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [4] TUTORIAL: 獨立示範教學區 (看完回大廳)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [5] PLAYING: 遊戲主體 + ESC暫停監聽</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [6] PAUSED: 暫停遮罩 (繼續 / 回大廳)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> [7] GAMEOVER: 結算重置 (清空變數，拒絕F5)</div>
         </div>
     </div>
 
-    <button class="generate-btn" onclick="generate()">🚀 產生傳奇復刻強制指令</button>
+    <button class="generate-btn" onclick="generate()">🚀 產生教育神作與系統進化指令</button>
 
     <div class="output-box">
         <button class="copy-btn" onclick="copy()">複製提示詞</button>
@@ -282,80 +258,72 @@
 
 <script>
     const cloneRules = {
-        "dq": "【核心機制仿作：勇者鬥惡龍 (第一人稱回合制RPG)】實作指令選單(攻擊/魔法/道具/逃跑)，敵人在畫面中央，我方只顯示UI。需實作命中率、浮動傷害、經驗值與升級數學公式。",
-        "pokemon": "【核心機制仿作：寶可夢 (精靈對戰回合制)】實作左右兩側對峙視角。具備屬性相剋表(Fire, Water, Grass等倍率)，技能具備威力值與 PP(使用次數)限制。",
-        "ff": "【核心機制仿作：太空戰士 (ATB半即時回合制)】實作動態時間戰鬥(Active Time Battle)。角色必須等待 ATB 條集滿才能行動，選單操作期間時間不暫停。",
-        "zelda": "【核心機制仿作：薩爾達眾神三角 (俯視角ARPG)】實作八向移動。攻擊時在角色前方生成半圓形刀光判定框(Hitbox)，敵人受擊需有後退硬直(Knockback)。",
-        "diablo": "【核心機制仿作：暗黑破壞神 (點擊動作RPG)】實作滑鼠點擊地板移動(Pathfinding)與點擊敵人自動連續攻擊。實作快捷鍵喝血瓶冷卻機制與敵人掉落物拾取。",
-        "mana": "【核心機制仿作：聖劍傳說 (冷卻ARPG)】實作無縫戰鬥，但每次揮砍後武器必須進入100%充能冷卻，未充能滿揮擊傷害極低。並實作遊戲暫停時彈出的環形選單(Ring Menu)。",
-        "mario": "【核心機制仿作：超級瑪利歐 (平台跳躍)】實作嚴格的矩形AABB碰撞。踩在敵人頂部=秒殺敵人並彈起，碰到敵人側面=扣血。實作按住加速鍵增加最大水平速度與跳躍高度。",
-        "sonic": "【核心機制仿作：音速小子 (動量平台跳躍)】角色移動需實作強烈的動量與摩擦力漸進加速。實作受擊時「噴出身上所有金環」的防死機制，身上無環受擊才Game Over。",
-        "megaman": "【核心機制仿作：洛克人 (射擊平台跳躍)】跳躍與射擊可同時進行(獨立狀態機)。實作地面衝刺(Dash)，以及Boss被擊中時的閃爍無敵幀(i-frames)。",
-        "celeste": "【核心機制仿作：蔚藍 (硬核平台跳躍)】手感要求極高：實作八向空中衝刺(Dash)、土狼時間(Coyote Time)、跳躍緩衝(Jump Buffer)。死亡必須瞬間(0.1秒)重置回到起點。",
-        "contra": "【核心機制仿作：魂斗羅 (捲軸射擊)】實作八向射擊(包含斜向)。跳躍時角色會捲曲成球判定框縮小。必須能實作兩種以上的子彈邏輯(如直線連發與散彈Spread)。",
-        "metalslug": "【核心機制仿作：越南大戰 (橫版射擊)】實作近距離遇敵時，射擊鍵自動判定改為近戰小刀秒殺。實作手榴彈具備重力的拋物線軌跡。",
-        "raiden": "【核心機制仿作：雷電 (縱向STG)】背景強制向下滾動。實作玩家兩種武器(散開的紅彈 / 追蹤的藍雷射)。實作按下保命炸彈(Bomb)時清除全螢幕敵方子彈並給予無敵。",
-        "1942": "【核心機制仿作：1942 (縱向打機)】實作二戰風格。關鍵機制為「迴旋躲避(Loop-the-loop)」：按下特定鍵，戰機執行迴旋動畫，期間完全無敵但不具攻擊力。",
-        "spaceinvaders": "【核心機制仿作：太空侵略者 (固定畫面射擊)】敵人以陣列排布，全體左右移動，碰到邊界則集體下移一行並加速。玩家上方需實作可被敵我雙方子彈破壞的像素掩體。",
-        "touhou": "【核心機制仿作：東方 Project (彈幕STG)】玩家的受擊判定框(Hitbox)必須極小(僅限角色中心的一個小圓點)。敵人會發射以圓形或螺旋形擴散的密集幾何彈幕(需用到三角函數計算彈道)。",
-        "sor": "【核心機制仿作：怒之鐵拳 (清版動作)】實作 Z 軸(上下)走位邏輯(Y座標影響圖層渲染順序 z-index)。連續按攻擊鍵需觸發 1-2-3 連段判定(Combo)。",
-        "goldenaxe": "【核心機制仿作：戰斧 (清版動作)】實作方向鍵連按兩下的衝刺攻擊(Dash Attack)。實作消耗魔法瓶釋放的「全螢幕暫停+華麗法術動畫清場」機制。",
-        "doubledragon": "【核心機制仿作：雙截龍 (清版動作)】實作被重擊時的「擊飛倒地(Knockdown)」狀態，倒地期間無敵。實作場景邊緣掉落秒殺的判定。",
-        "kingdomrush": "【核心機制仿作：王國保衛戰 (塔防)】路徑固定。玩家只能在特定「建塔點」建造。實作兵營塔：在路徑上生成可阻擋敵人的士兵(阻擋數設定)。",
-        "pvz": "【核心機制仿作：植物大戰殭屍 (網格塔防)】場地分為 5 條水平獨立網格線。實作向日葵定時生產「陽光(資源)」機制。敵人只會在自己所在的橫線上直線前進與咬擊。",
-        "bloons": "【核心機制仿作：猴子塔防 (塔防)】實作敵人的「層數(Layers)」機制：高階氣球被打爆後會分裂出多個低階氣球繼續跑。防禦塔必須有穿透力(Pierce)參數。",
-        "vampire": "【核心機制仿作：吸血鬼倖存者 (割草生存)】玩家只有移動鍵。所有武器依據冷卻時間自動發射。敵人死亡掉落經驗寶石，升級時【遊戲暫停】，彈出隨機 3 選 1 的技能提升選單。",
-        "isaac": "【核心機制仿作：以撒的結合 (Roguelike俯視射擊)】實作眼淚(子彈)會受角色移動慣性影響的拋物線物理。必須實作房間的門判定(清空敵人才開門)。",
-        "castlevania": "【核心機制仿作：惡魔城 (銀河惡魔城)】實作長武器(如鞭子/劍)的揮擊延遲後搖(Endlag)。實作向後墊步(Backdash)功能。擊殺敵人掉落紅心(副武器彈藥)。",
-        "metroid": "【核心機制仿作：密特羅德 (銀河惡魔城)】實作角色可以下蹲並變形為球體(縮小判定框以進入狹窄通道)。實作射擊特定開關來打開氣閘門的邏輯。",
-        "pacman": "【核心機制仿作：小精靈 (迷宮動作)】網格迷宮尋路。敵人有不同追逐AI。實作吃到「大力丸」後，所有敵人變色並逃跑，此時玩家可反向吃掉敵人的無敵反殺機制。",
-        "bomberman": "【核心機制仿作：炸彈超人 (網格炸彈)】玩家放置炸彈後，幾秒後產生呈「十字形」擴散的爆炸火焰(受限於不可破壞的牆壁)。火焰可摧毀軟磚塊並炸死敵人/自己。",
-        "tetris": "【核心機制仿作：俄羅斯方塊 (掉落益智)】實作 10x20 網格。實作 7 種 Tetromino 的二維陣列旋轉碰撞。實作填滿一整行後的消除(Clear)與上方方塊下移邏輯。",
-        "sokoban": "【核心機制仿作：推箱子 (網格益智)】實作箱子只能「推」不能「拉」。當箱子後面是牆壁或其他箱子時不可推動。必須實作按 Z 鍵撤銷上一步(Undo)的堆疊(Stack)機制。",
-        "cookie": "【核心機制仿作：餅乾點擊者 (放置掛機)】實作極大的數值顯示(1K, 1M, 1B)。實作建築物的價格隨購買數量呈「指數型增長(Price = Base * 1.15^N)」。利用 Date.now() 計算背景/離線收益。",
-        "pong": "【核心機制仿作：乓 (乒乓街機)】實作球撞擊球拍不同位置(上/中/下)會產生不同反射角度(Y軸速度改變)。每次擊球後球的整體速度微幅增加。"
+        "dq": "【核心機制仿作：勇者鬥惡龍 (RPG雙系統)】\n**絕對禁止只有單調的戰鬥畫面！你必須實作完整的「雙系統」：**\n1. **行走地圖(Overworld)**：實作 2D 網格地圖，玩家使用方向鍵移動角色探索。必須包含障礙物碰撞。\n2. **隨機遇敵(Encounter)**：在地圖移動時有低機率觸發暗雷，畫面閃爍後切換至「第一人稱回合制戰鬥」。\n3. **戰鬥系統**：包含攻擊/魔法/逃跑選單，計算 HP/MP 與傷害公式。戰鬥結束後切換回地圖並給予經驗值。",
+        "pokemon": "【核心機制仿作：寶可夢 (RPG雙系統)】\n**絕對禁止只有單調的戰鬥畫面！你必須實作完整的「雙系統」：**\n1. **行走地圖(Overworld)**：實作俯視角(Top-down) 2D 行走地圖。設置「草叢」區塊，只有在草叢移動才會觸發戰鬥。\n2. **回合制戰鬥**：切換至左右對峙畫面。實作屬性相剋邏輯(如水剋火)，以及具備 PP(使用次數)限制的技能選單。戰鬥勝利後回到地圖。",
+        "ff": "【核心機制仿作：太空戰士 (RPG雙系統)】\n**絕對禁止只有單調的戰鬥畫面！你必須實作完整的「雙系統」：**\n1. **行走地圖(Overworld)**：實作角色自由移動的探索地圖。觸發戰鬥時必須有轉場碎裂動畫。\n2. **ATB戰鬥**：進入戰鬥後，我方與敵方分列左右。實作 ATB(Active Time Battle) 讀條機制，角色等待計時條集滿才能下達指令。",
+        "zelda": "【核心機制仿作：薩爾達眾神三角 (俯視角ARPG)】實作八向移動與探索地圖。攻擊時在角色前方生成判定框(Hitbox)，敵人受擊需有後退硬直。地圖上應有可互動的簡單機關(如推石頭開門)。",
+        "diablo": "【核心機制仿作：暗黑破壞神 (點擊ARPG)】實作滑鼠點擊地板尋路(Pathfinding)與點擊敵人自動連續攻擊。實作快捷鍵喝血瓶(具備冷卻時間)與敵人掉落物拾取。",
+        "mario": "【核心機制仿作：超級瑪利歐 (平台跳躍)】實作嚴格的 AABB 碰撞。踩在敵人頂部=秒殺敵人並彈起，碰側面=扣血。實作加速度與跳躍高度控制。",
+        "megaman": "【核心機制仿作：洛克人 (射擊平台跳躍)】跳躍與射擊狀態獨立。實作地面衝刺(Dash)，以及Boss被擊中時的閃爍無敵幀(i-frames)。",
+        "vampire": "【核心機制仿作：吸血鬼倖存者 (割草生存)】玩家僅控制移動，武器依冷卻時間自動發射。敵人死亡掉落經驗，升級時【遊戲暫停】，彈出隨機 3 選 1 的技能提升選單。",
+        "contra": "【核心機制仿作：魂斗羅 (捲軸射擊)】實作八向射擊。跳躍時角色會捲曲成球判定框縮小。具備多種子彈邏輯(直線/散彈)。",
+        "raiden": "【核心機制仿作：雷電 (縱向STG)】背景強制向下滾動。實作玩家兩種武器(散開紅彈/追蹤藍雷射)與保命炸彈(Bomb)清場無敵機制。",
+        "kingdomrush": "【核心機制仿作：王國保衛戰 (塔防)】路徑固定，玩家在特定點建塔。實作兵營塔：在路徑上生成可阻擋(Block)敵人的士兵實體。",
+        "pacman": "【核心機制仿作：小精靈 (迷宮動作)】網格迷宮尋路。實作吃到「大力丸」後敵人變色逃跑，玩家可反殺吃掉敵人的機制。"
     };
 
     function generate() {
         const theme = document.getElementById('taskInput').value || "保留原版美術風格";
+        const edu = document.getElementById('eduInput').value;
         const gameKey = document.getElementById('s_genre').value;
         const input = document.getElementById('s_input').value;
 
-        let p = `# Role: 資深遊戲逆向工程師與 HTML5 移植專家\n`;
-        p += `這是一次「不成功便成仁」的商業級復刻任務。你必須完美還原經典遊戲的底層數值與物理邏輯。\n`;
-        p += `**【最高警告】：你之前經常為了省字數而拔掉遊戲狀態機、暫停功能與特效。這次如果你敢使用 \`// 此處省略\`、\`// TODO\` 或漏掉任何一個 XML 標籤要求，將被視為嚴重失敗！**\n\n`;
+        let p = `# Role: 資深遊戲工程師與教育科技(Edutainment)專家\n`;
+        p += `這是一次無可挑剔的商業級 Web 遊戲開發任務。你必須完美還原經典遊戲的底層邏輯，同時整合教育元素與專業的系統選單。\n`;
+        p += `**【最高警告】：你之前常為了省事而拔掉選單、地圖探索或暫停功能。這次如果出現 \`// 此處省略\`、\`// TODO\` 或缺少下方任何一項 XML 要求，將被視為嚴重失敗！**\n\n`;
 
-        p += `<CRITICAL_CLONE_TARGET>\n`;
-        p += `目標：${cloneRules[gameKey]}\n`;
-        p += `美術換皮指示：${theme} (請將上述經典機制的底層，套用此處描述的美術外觀與文字)\n`;
-        p += `</CRITICAL_CLONE_TARGET>\n\n`;
+        p += `<CRITICAL_CLONE_AND_RESKIN>\n`;
+        p += `目標架構：${cloneRules[gameKey]}\n`;
+        p += `美術換皮：${theme}\n`;
+        p += `</CRITICAL_CLONE_AND_RESKIN>\n\n`;
 
-        p += `<UNBREAKABLE_STATE_MACHINE> (重點！必須完整實作這 6 個階段)\n`;
-        p += `你必須使用一個變數 (如 \`gameState\`) 來嚴格控制以下流程，**缺一不可**：\n`;
-        p += `1. **INIT_SCREEN**：畫面上只顯示標題與「點擊任意處開始」。玩家點擊後，觸發 \`AudioContext.resume()\` (解鎖瀏覽器BGM限制)，然後才進入 LOBBY。\n`;
-        p += `2. **LOBBY**：顯示主選單，必須包含「開始遊戲」與「操作說明」按鈕/圖文。\n`;
-        p += `3. **TUTORIAL_DEMO**：點擊開始後，用程式在 Canvas 上畫出一段 3~5 秒的「自動遊玩動畫」或「按鍵圖示高亮」示範怎麼玩，結束後進入 PLAYING。\n`;
-        p += `4. **PLAYING**：遊戲主邏輯運行區。畫面角落**必須有暫停按鈕**(或監聽 ESC 鍵)。\n`;
-        p += `5. **PAUSED**：觸發暫停時，\`deltaTime\` 與更新必須停止！畫面上方蓋上半透明遮罩，畫出【繼續遊戲】與【返回大廳】按鈕。返回大廳必須清空當前遊戲資料。\n`;
-        p += `6. **GAME_OVER**：結算分數/結果。提供「重新開始」按鈕，點擊後必須透過**重新初始化陣列與變數**重置遊戲，**絕對嚴禁使用 location.reload()**。\n`;
+        if (edu.trim() !== "") {
+            p += `<EDUTAINMENT_INTEGRATION> (教育與學科融合 - 必須實作)\n`;
+            p += `你必須將以下教育機制**無縫且有趣地**融入遊戲的核心玩法迴圈中，而不是只放一個死板的問答框：\n`;
+            p += `教育機制需求：【${edu}】\n`;
+            p += `(例如：如果是 RPG，可以在戰鬥攻擊前彈出題目，答對才造成暴擊；如果是動作遊戲，可以將收集品改成正確答案的選項。請用程式碼確實實作此邏輯判斷！)\n`;
+            p += `</EDUTAINMENT_INTEGRATION>\n\n`;
+        }
+
+        p += `<UNBREAKABLE_STATE_MACHINE> (重點！必須完整實作這 7 大系統階段)\n`;
+        p += `你必須使用 \`gameState\` 變數嚴格控制以下流程，**缺一不可，這是獨立遊戲的標準**：\n`;
+        p += `1. **INIT_SCREEN**：黑底白字顯示標題與「點擊任意處開始」。點擊後觸發 \`AudioContext.resume()\` 以解鎖瀏覽器 BGM 限制，然後進入 LOBBY。\n`;
+        p += `2. **LOBBY (大廳主選單)**：顯示遊戲標題，並由程式繪製三個按鈕：【開始遊戲】、【教學說明】、【遊戲設定】。\n`;
+        p += `3. **SETTINGS (設定選單)**：獨立介面。必須實作：\n`;
+        p += `   - **多國語言切換 (Language)**：實作簡單的 i18n 字典(如繁中/英文)，點擊按鈕即時切換 UI 文字。\n`;
+        p += `   - **音訊控制 (Audio)**：實作背景音樂(BGM)與音效(SFX)的開關或音量條。\n`;
+        p += `   - 提供【返回大廳】按鈕。\n`;
+        p += `4. **TUTORIAL (教學區)**：從大廳進入，獨立顯示。在 Canvas 上畫出圖文操作說明，或用程式跑一段小示範動畫。提供【返回大廳】按鈕。\n`;
+        p += `5. **PLAYING (遊戲中)**：遊戲主迴圈。畫面角落**強制繪製一個暫停按鈕**(並監聽 ESC 鍵)。\n`;
+        p += `6. **PAUSED (暫停)**：觸發暫停時，\`deltaTime\` 與物件更新必須停止！畫面上方蓋上半透明遮罩，繪製【繼續遊戲】與【返回大廳】按鈕。\n`;
+        p += `7. **GAME_OVER**：結算畫面。提供「重新開始」按鈕，點擊後必須**重新初始化所有陣列與變數**重置遊戲，**絕對嚴禁使用 location.reload()**。\n`;
         p += `</UNBREAKABLE_STATE_MACHINE>\n\n`;
 
-        p += `<ULTIMATE_GAME_JUICE_AND_TECH>\n`;
-        p += `以下功能**不准拿掉**，必須全部寫入代碼中：\n`;
+        p += `<ULTIMATE_TECH_SPECS>\n`;
         p += `- **操作方案**：${input}\n`;
-        p += `- **手感反饋**：必須實作【螢幕震動 (Screen Shake)】、【動態粒子爆破 (Particles)】、【打擊頓幀 (Hitstop)】。\n`;
-        p += `- **效能與物理**：所有移動與冷卻必須乘上 \`deltaTime\` (時間差計算)。子彈/敵人強制實作【物件池 (Object Pool)】防止卡頓。\n`;
-        p += `- **存檔**：必須使用 LocalStorage 儲存最高分或進度。\n`;
-        p += `</ULTIMATE_GAME_JUICE_AND_TECH>\n\n`;
+        p += `- **手感反饋**：必須實作【螢幕震動 (Screen Shake)】、【動態粒子 (Particles)】。\n`;
+        p += `- **效能與物理**：所有移動/冷卻必須乘上 \`deltaTime\`。高頻物件必須實作【物件池 (Object Pool)】。\n`;
+        p += `- **存檔**：使用 LocalStorage 儲存最高分與語言/音量設定。\n`;
+        p += `</ULTIMATE_TECH_SPECS>\n\n`;
 
-        p += `**請確認無誤後，直接輸出單一、完整、無任何省略、複製即可完美運行的 \`\`\`html 代碼區塊！**`;
+        p += `**請確認無誤後，直接輸出單一、完整、無任何省略且包含上述所有功能的 \`\`\`html 代碼區塊！**`;
 
         document.getElementById('outputArea').innerText = p;
     }
 
     function copy() {
         const t = document.getElementById('outputArea').innerText;
-        navigator.clipboard.writeText(t).then(() => alert('「傳奇復刻指令」已複製！這次 AI 將精準還原神作的骨架！'));
+        navigator.clipboard.writeText(t).then(() => alert('「教育神作與系統進化指令」已複製！這次的 RPG 絕對會有地圖，主選單也會擁有完美的設定功能！'));
     }
 </script>
 
