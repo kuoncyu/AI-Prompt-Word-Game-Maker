@@ -1,228 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>遊戲開發 AI 提示詞生成器 v10.0 經濟循環版</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #e2e8f0; max-width: 1200px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-        h1 { color: #10b981; border-bottom: 2px solid #047857; padding-bottom: 15px; text-align: center; font-size: 2.2em; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
-        .section { background: #1e293b; padding: 20px; border-radius: 10px; border: 1px solid #334155; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .full-width { grid-column: 1 / -1; }
-        label.title { display: block; font-weight: bold; margin-bottom: 12px; color: #fff; background: linear-gradient(90deg, #10b981 0%, #059669 100%); padding: 6px 12px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        input[type="text"], select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #475569; border-radius: 6px; background: #0f172a; color: #f8fafc; font-family: inherit; box-sizing: border-box; transition: border-color 0.3s; }
-        input[type="text"]:focus, select:focus, textarea:focus { outline: none; border-color: #10b981; }
-        textarea { height: 80px; resize: vertical; }
-        
-        .checkbox-group, .locked-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; background: #0f172a; padding: 15px; border-radius: 6px; border: 1px solid #334155; }
-        .checkbox-group label { display: inline-flex; align-items: flex-start; font-weight: normal; color: #cbd5e1; cursor: pointer; font-size: 0.95em; line-height: 1.4; }
-        .checkbox-group input { margin-right: 10px; margin-top: 3px; accent-color: #10b981; transform: scale(1.1); }
-        
-        /* 強制綁定區塊的特殊樣式 */
-        .locked-group { border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05); }
-        .locked-group label { color: #6ee7b7; cursor: not-allowed; font-weight: 500; }
-        .locked-group input { filter: grayscale(1); opacity: 0.7; }
+# Role: 頂級全棧遊戲工程師與系統架構師
 
-        .radio-group { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; background: #0f172a; padding: 10px 15px; border-radius: 6px; border: 1px solid #334155; }
-        .radio-group label { cursor: pointer; color: #cbd5e1; display: flex; align-items: center; }
-        .radio-group input { accent-color: #10b981; margin-right: 6px; }
-        
-        /* 雙拉桿設計 */
-        .slider-container { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; padding: 12px; background: #0f172a; border-radius: 6px; border: 1px solid #334155;}
-        input[type="range"] { flex-grow: 1; accent-color: #10b981; cursor: pointer; height: 6px; }
-        .score-display { font-size: 1.5em; font-weight: bold; color: #10b981; width: 35px; text-align: right; }
+## 1. 【開發任務與核心目標】
+- **專案描述**：一款冒險的成語解謎遊戲
+- **遊戲類型**：RPG角色扮演
+- **美術風格**：Cyberpunk賽博龐克
 
-        button { background: linear-gradient(90deg, #10b981 0%, #059669 100%); color: #fff; border: none; padding: 16px 20px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; width: 100%; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4); margin-top: 10px; letter-spacing: 1px; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(5, 150, 105, 0.6); filter: brightness(1.1); }
-        #resultPrompt { height: 450px; background: #020617; color: #34d399; font-family: 'Consolas', 'Courier New', monospace; border: 1px solid #059669; padding: 15px; border-radius: 6px; line-height: 1.5; }
-    </style>
-</head>
-<body>
+## 2. 【強制輸出規範 (CRITICAL!)】
+> **嚴格要求：請直接輸出「單一且完整可用」的 .html 檔案程式碼（將 HTML、CSS、JS 寫在同一個檔案內）。**
+> **絕對禁止**：省略程式碼、使用 "// ...此處省略"、或只給片段。必須是一貼上瀏覽器就能立刻執行的完整版本。
+> **程式複雜度**：物件導向/高擴展性 (嚴謹模組化)，變數命名需清晰，且所有核心數值需標註為 {{Variable}} 方便日後調整。
 
-    <h1>🎮 遊戲開發 AI 提示詞生成器 v10.0 (經濟循環版)</h1>
+## 3. 【平台綁定與介面適配】
+- **跨平台適配**：必須支援 PC 與 Mobile 操作（包含滑鼠點擊與觸控事件）。
+- **螢幕綁定**：UI 佈局需符合「自適應 (Responsive)」設計。
+- **全螢幕支援**：內建按鈕可呼叫 Fullscreen API 進入/退出全螢幕。
+- **多國語系**：內建 i18n 語系切換功能（支援 繁體中文/日文/英文），介面需能即時切換。
 
-    <div class="grid-container">
-        <div class="section">
-            <label class="title">🕹️ 1. 遊戲核心與維度 (Genre & Dimension)</label>
-            <div class="radio-group">
-                <label><input type="radio" name="dimension" value="2D 平面視角" checked> 2D 平面</label>
-                <label><input type="radio" name="dimension" value="3D 視角 (使用 CSS3D 或簡單的偽 3D 渲染)"> 3D / 偽3D</label>
-            </div>
-            <select id="genre">
-                <option value="動作遊戲 (ACT)">⚔️ 動作遊戲 (ACT)</option>
-                <option value="角色扮演 (RPG)">🛡️ 角色扮演 (RPG)</option>
-                <option value="動作角色扮演 (ARPG)">🔥 動作角色扮演 (ARPG)</option>
-                <option value="冒險解謎 (AVG)">🔍 冒險解謎 (AVG)</option>
-                <option value="射擊遊戲 (STG)">🔫 射擊遊戲 (STG / FPS / TPS)</option>
-                <option value="策略戰略 (SLG/RTS)">♟️ 策略戰略 (SLG / RTS)</option>
-                <option value="模擬經營 (SIM)">🌾 模擬經營 (SIM)</option>
-            </select>
-            <select id="theme">
-                <option value="未來科技風 (Cyberpunk / Sci-Fi)">🚀 未來科技 (Cyberpunk)</option>
-                <option value="中式古風 (Traditional Chinese)，水墨武俠">🏮 中式古風 (水墨/武俠)</option>
-                <option value="西式中世紀風 (Western Medieval)">🏰 西式中世紀 (奇幻史詩)</option>
-                <option value="日系動漫風 (Anime/JRPG)">🌸 日系動漫風 (JRPG)</option>
-                <option value="極簡扁平風 (Minimalist)">💠 極簡扁平風 (Minimalist)</option>
-            </select>
+## 4. 【影音系統架構】
+- **音樂風格**：Epic Orchestral史詩交響
+- **音樂複雜度**：層次豐富華麗 (多聲軌疊加)
+*(請在程式碼中使用 Web Audio API 或是邏輯註解來實作或預留影音系統框架)*
+- **音效系統**：所有 UI 點擊、戰鬥打擊、獲取物品等動作，必須綁定獨立的 SFX 觸發函數。
 
-            <label class="title">⌨️ 2. 自訂輸入介面 (Input UX)</label>
-            <select id="keyboardType">
-                <option value="英數鍵盤">🔠🔢 需要：英數混合鍵盤 (A-Z, 0-9)</option>
-                <option value="英文鍵盤">🔠 需要：純英文鍵盤 (A-Z)</option>
-                <option value="數字鍵盤">🔢 需要：純數字鍵盤 (0-9)</option>
-                <option value="不需要">❌ 不需要虛擬小鍵盤</option>
-            </select>
+## 5. 【遊戲擴充系統 (核心機制)】
+請實作以下完整邏輯，包含觸發條件、運算公式與視覺反饋：
+- **存檔系統**：使用 LocalStorage 實作自動/手動存檔與讀檔，需包含資料防呆機制。
+- **抽卡/寶箱機制**：建立具備「權重(Weight)與保底邏輯」的隨機抽取系統。
+- **升級系統**：具備經驗值演算法（如指數型成長曲線）與屬性點數分配邏輯。
+- **戰鬥機制**：包含攻擊力、防禦力計算公式，以及技能冷卻(Cooldown)時間管理。
+- **對話/劇情系統**：實作可分支的劇情對話樹陣列 (Dialog Tree)。
 
-            <label class="title">🎵 3. 音樂氛圍與華麗度 (Audio)</label>
-            <select id="audioStyle">
-                <option value="緊張刺激 (戰鬥場面)">🔥 緊張刺激 (戰鬥場面)</option>
-                <option value="田園悠閒 (放鬆療癒)">🌾 田園悠閒 (放鬆療癒)</option>
-                <option value="史詩磅礴 (宏大交響)">👑 史詩磅礴 (宏大交響)</option>
-                <option value="不處理音訊。">🔇 暫不加入音樂</option>
-            </select>
-            <div class="slider-container">
-                <span style="color:#aaa; font-size:0.85em;">單調</span>
-                <input type="range" id="audioComplexity" min="1" max="10" value="8" oninput="document.getElementById('audioVal').innerText = this.value">
-                <span style="color:#aaa; font-size:0.85em;">華麗</span>
-                <span id="audioVal" class="score-display">8</span>
-            </div>
-            
-            <label class="title">🧠 4. 程式複雜度 (Code Complexity)</label>
-            <div class="slider-container">
-                <span style="color:#aaa; font-size:0.85em;">簡單</span>
-                <input type="range" id="codeComplexity" min="1" max="10" value="8" oninput="document.getElementById('codeVal').innerText = this.value">
-                <span style="color:#aaa; font-size:0.85em;">嚴謹</span>
-                <span id="codeVal" class="score-display">8</span>
-            </div>
-        </div>
+## 6. 【AI 強制後台自我診斷 (Internal Logic QA)】
+在生成程式碼之前，你必須在內部大腦執行以下跑測。**若無法通過，請自行修正程式碼邏輯再輸出**：
+- **[遊戲性閉環]**：資源的獲取與消耗是否平衡？玩家是否會卡死在某個畫面？
+- **[邊界與壓力測試]**：當玩家瘋狂連點、輸入無效字元、或是數值堆疊到極限時，系統是否會崩潰（NaN）？
 
-        <div class="section">
-            <label class="title">🔒 5. 強制綁定核心功能 (Mandatory)</label>
-            <div class="locked-group">
-                <label><input type="checkbox" checked disabled> 🔲 <b>全螢幕按鍵</b> (Fullscreen API)</label>
-                <label><input type="checkbox" checked disabled> 📱 <b>跨裝置完美適配</b> (自動適應直/橫屏)</label>
-                <label><input type="checkbox" checked disabled> ⏸️ <b>流程控制</b> (暫停與返回主選單狀態機)</label>
-                <label><input type="checkbox" checked disabled> 🚀 <b>強制初始頁面</b> (破解瀏覽器靜音限制)</label>
-                <label><input type="checkbox" checked disabled> 🗑️ <b>重置紀錄按鍵</b> (清空存檔並防呆確認)</label>
-            </div>
-
-            <label class="title">⚙️ 6. 擴充遊戲系統 (Systems)</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="systems" value="【難易度系統】：主選單加入難度選擇 (等級 1~5)，連動遊戲數值。"> 📊 難易度選擇 (1~5級)</label>
-                <label><input type="checkbox" name="systems" value="【角色升級系統】：包含經驗值 (EXP) 獲取機制與能力提升。"> 📈 角色升級 (Leveling)</label>
-                <label><input type="checkbox" name="systems" value="【裝備與背包系統】：實作物品欄，玩家可穿脫裝備並即時反映能力數值。"> 🎒 裝備與背包 (Inventory)</label>
-                <label><input type="checkbox" name="systems" value="【裝備販售/分解系統】：實作商店或背包內的販售功能，允許玩家將多餘裝備換取金幣 (解決背包滿載問題)。"> 💰 裝備販售系統 (防爆滿)</label>
-                <label><input type="checkbox" name="systems" value="【抽卡/寶箱系統】：實作隨機機率抽獎機制與開箱動畫特效。"> 🎁 抽寶箱/抽卡 (Gacha)</label>
-                <label><input type="checkbox" name="systems" value="【讀檔與存檔功能】：自動利用 LocalStorage 儲存進度與解鎖狀態。"> 💾 自動進度存檔 (Auto Save)</label>
-            </div>
-            
-            <label class="title">🌍 7. 介面多國語言與資料庫 (i18n & Data)</label>
-            <select id="language" style="margin-bottom: 15px;">
-                <option value="單一語言：繁體中文。">🇹🇼 單一語言 (繁中)</option>
-                <option value="【多國語言 (i18n)】：建立字典檔支援繁中、英文、日文切換。">🌐 多國語言 (繁中/英/日)</option>
-            </select>
-            <div class="radio-group">
-                <label><input type="radio" name="dataArch" value="內嵌單檔" checked> 單檔內嵌 JS</label>
-                <label><input type="radio" name="dataArch" value="外部檔案"> 拆分 data.js 檔案</label>
-            </div>
-        </div>
-
-        <div class="section full-width">
-            <label class="title">🎯 8. 當前開發任務 (Current Task)</label>
-            <textarea id="task" placeholder="例如：請根據以上規格，實作帶有裝備販售系統的UI、遊戲主迴圈與基礎畫面渲染..."></textarea>
-            
-            <button onclick="generatePrompt()">🚀 產生經濟循環版提示詞</button>
-        </div>
-
-        <div class="section full-width" id="outputArea">
-            <label class="title" style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); color: #fff;">📝 你的專屬 AI 提示詞 (請複製給 AI)：</label>
-            <textarea id="resultPrompt" readonly></textarea>
-            <button class="btn-copy" onclick="copyPrompt()">📋 一鍵複製提示詞</button>
-        </div>
-    </div>
-
-    <script>
-        function generatePrompt() {
-            const dimension = document.querySelector('input[name="dimension"]:checked').value;
-            const genre = document.getElementById('genre').value;
-            const theme = document.getElementById('theme').value;
-            const keyboardType = document.getElementById('keyboardType').value;
-            const audioStyle = document.getElementById('audioStyle').value;
-            const audioComplexity = document.getElementById('audioComplexity').value;
-            const codeComplexity = document.getElementById('codeComplexity').value;
-            const language = document.getElementById('language').value;
-            const dataArch = document.querySelector('input[name="dataArch"]:checked').value;
-            const task = document.getElementById('task').value || "請實作遊戲的主程式框架、嚴謹的狀態機 (State Machine) 以及上述要求之所有核心系統。";
-            
-            // 處理擴充系統
-            const systemCheckboxes = document.querySelectorAll('input[name="systems"]:checked');
-            let systemsText = "";
-            if (systemCheckboxes.length > 0) {
-                systemsText = "\n  - " + Array.from(systemCheckboxes).map(cb => cb.value).join("\n  - ");
-            }
-
-            // 處理虛擬鍵盤邏輯
-            let keyboardRule = "";
-            if (keyboardType !== "不需要") {
-                keyboardRule = `\n5. 【虛擬小鍵盤 (${keyboardType})】：在輸入玩家名稱或數值時，絕對不能使用瀏覽器原生的 prompt() 或 input 標籤。必須實作一個可點擊/觸控的「螢幕內建虛擬小鍵盤 (${keyboardType}，如 Canvas 繪製或 DOM 覆蓋)」，確保街機或純觸控模式的體驗。`;
-            }
-
-            // 處理音樂邏輯
-            let audioPrompt = "";
-            if (audioStyle !== "不處理音訊。") {
-                audioPrompt = `\n* 【華麗背景音樂】：風格為「${audioStyle}」。必須透過 Web Audio API 純程式碼合成。\n   * 音樂華麗程度：${audioComplexity} / 10分。請依此決定 Oscillator 數量、音軌層次(旋律/和弦/Bass)與特效節點，拒絕單調。`;
-            }
-
-            // 處理檔案結構規則
-            let fileRule = "2. 【單一檔案嚴格限制】：請將所有的 HTML、CSS、JS 寫在「同一個 HTML 檔案」中！絕對不要將程式碼分離。";
-            if (dataArch === "外部檔案") {
-                fileRule = "2. 【檔案結構】：請將 HTML/CSS/JS 主邏輯放在 index.html，但將遊戲的數值、設定與文本獨立寫成 data.js 供外部引入。";
-            }
-
-            // 🌟 組合最終 Prompt
-            const prompt = `# 角色設定
-你是一位頂尖的資深全端遊戲工程師與系統架構師，精通 HTML5 Canvas、Web Audio API 經濟數值平衡及跨平台系統設計。
-
-# 專案架構文件 (Game Design Document)
-請在撰寫程式碼時，嚴格實作以下核心規格：
-* 【遊戲類型與維度】：${dimension} 的 ${genre}
-* 【美術風格】：${theme}
-* 【多國語言】：${language}
-* 【程式複雜度】：${codeComplexity} / 10分。(請依此分數決定物件導向、資料解耦與特效運算的深度)${systemsText}${audioPrompt}
-
-# 🔒 強制綁定核心功能 (Mandatory Requirements)
-為確保商業級體驗與跨裝置相容性，程式碼中【必須】包含以下所有機制：
-1. 【強制初始頁面】：必須有「Start Screen (主選單)」，點擊後才解鎖 AudioContext。
-2. 【全螢幕按鍵】：畫面必須提供按鈕呼叫 HTML5 Fullscreen API。
-3. 【跨裝置完美適配】：Canvas 監聽 resize，完美適應電腦/手機的直橫屏比例且不變形。
-4. 【遊戲流程與重置】：實作「暫停」與「回主選單」的狀態機(State Machine)。主選單需有「重置紀錄」按鈕，並自帶防呆確認視窗才能清除存檔。${keyboardRule}
-
-# 當前開發任務
-**${task}**
-
-<rules>
-1. 【零外部素材】：絕不使用 <img> 或外部音檔。視覺用 Canvas 繪製，音效用程式碼合成。
-${fileRule}
-</rules>
-
-# 輸出格式
-請將完整程式碼包裝在單一 Markdown 區塊中。若因長度限制中斷，請在我回覆「繼續」後接續產出。`;
-
-            document.getElementById('resultPrompt').value = prompt;
-        }
-
-        function copyPrompt() {
-            const copyText = document.getElementById('resultPrompt');
-            if (!copyText.value) {
-                alert('請先點擊產生按鈕！'); return;
-            }
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            alert("📋 v10.0 提示詞已複製！裝備販售與自訂鍵盤準備就緒！");
-        }
-    </script>
-</body>
-</html>
+**請現在開始分析需求，並直接輸出完整的 HTML 原始碼！**
