@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 遊戲架構大師 v7.0 - 精準打擊體驗版</title>
+    <title>AI 遊戲架構大師 v8.0 - 專業級精度與完整狀態版</title>
     <style>
         :root {
-            --primary: #ffd700; /* 切換為更具遊戲感的金黃色 */
-            --accent: #ff4500;
-            --bg: #0b0c10;
-            --card: #1f2833;
-            --text: #c5c6c7;
-            --border: #45a29e;
-            --hover: #2c3e50;
+            --primary: #00e5ff;
+            --accent: #ff3366;
+            --bg: #09090e;
+            --card: #151520;
+            --text: #d4d4db;
+            --border: #2a2a40;
+            --success: #00ff88;
         }
 
         body {
@@ -22,7 +22,7 @@
             padding: 20px;
             line-height: 1.6;
             margin: 0;
-            background-image: linear-gradient(to bottom right, #0b0c10, #1f2833);
+            background-image: radial-gradient(circle at top right, #151520, #09090e);
         }
 
         .container {
@@ -32,14 +32,14 @@
             padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(69, 162, 158, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.1);
         }
 
         h1 {
             text-align: center;
             font-size: 2.2rem;
             color: var(--primary);
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
             margin-top: 0;
             letter-spacing: 2px;
         }
@@ -58,9 +58,9 @@
         
         textarea {
             width: 100%;
-            background: #0b0c10;
+            background: #000;
             border: 1px solid var(--border);
-            color: #66fcf1;
+            color: #00e5ff;
             padding: 15px;
             border-radius: 8px;
             font-size: 1rem;
@@ -70,14 +70,15 @@
         textarea:focus { outline: none; border-color: var(--primary); }
 
         select, input[type="text"] {
-            background: #0b0c10;
+            background: #000;
             border: 1px solid var(--border);
             color: #fff;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 10px;
+            border-radius: 6px;
             width: 100%;
             margin-top: 5px;
             cursor: pointer;
+            font-size: 0.95rem;
         }
 
         .grid-container {
@@ -88,16 +89,15 @@
         }
 
         .feature-box {
-            background: #151a22;
+            background: #101018;
             padding: 20px;
             border-radius: 10px;
-            border: 1px solid #2b3a4a;
+            border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
-        .feature-box:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(255,215,0,0.1); }
-        .feature-box.juice { border-color: rgba(255, 69, 0, 0.5); background: linear-gradient(180deg, #151a22, #2a110a); }
-        .feature-box.tech { border-color: rgba(69, 162, 158, 0.5); }
+        .feature-box:hover { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,229,255,0.1); }
+        .feature-box.locked { border-color: rgba(0, 255, 136, 0.4); background: linear-gradient(180deg, #101018, #051a10); }
 
         .checkbox-item {
             display: flex;
@@ -111,7 +111,7 @@
 
         input[type="checkbox"] { 
             margin-right: 12px; 
-            accent-color: var(--accent); 
+            accent-color: var(--success); 
             width: 18px; 
             height: 18px; 
             cursor: pointer;
@@ -126,7 +126,7 @@
         button.generate-btn {
             width: 100%;
             padding: 20px;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
+            background: linear-gradient(135deg, var(--primary), #0077ff);
             border: none;
             color: #000;
             font-weight: 900;
@@ -139,11 +139,11 @@
             text-transform: uppercase;
         }
 
-        button.generate-btn:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4); }
+        button.generate-btn:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4); }
 
         .output-box {
             margin-top: 30px;
-            background: #0b0c10;
+            background: #000;
             padding: 25px;
             border: 1px solid var(--primary);
             border-radius: 8px;
@@ -153,7 +153,7 @@
         pre {
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #66fcf1;
+            color: #00e5ff;
             font-family: 'Consolas', 'Courier New', monospace;
             font-size: 0.95rem;
             margin: 0;
@@ -182,88 +182,80 @@
 <body>
 
 <div class="container">
-    <h1>Game Architect 7.0 - 極致體驗與精準控制</h1>
+    <h1>Game Architect 8.0 - 專業精度與 UI 狀態版</h1>
 
     <div class="input-group">
-        <label class="group-title">🎯 核心玩法 (Core Gameplay)</label>
-        <textarea id="taskInput" rows="3" placeholder="請精確描述遊戲目標（例：玩家控制太空船，擊敗越來越強的隕石，碰到3次就 Game Over）..."></textarea>
+        <label class="group-title">🎯 核心玩法描述 (Core Gameplay)</label>
+        <textarea id="taskInput" rows="3" placeholder="請精確描述遊戲目標與核心操作（例：玩家控制太空船，擊敗越來越強的隕石，碰到3次就 Game Over）..."></textarea>
     </div>
 
     <div class="grid-container">
         <div class="feature-box">
-            <label class="group-title">🎲 遊戲定義 (Definition)</label>
+            <label class="group-title">🎲 遊戲核心底層定義 (Genre & Mechanics)</label>
             <div class="select-row">
-                <span>遊戲類型</span>
+                <span>遊戲類型 (內建底層物理與邏輯約束)</span>
                 <select id="s_genre">
-                    <option value="Action動作 (重視打擊感與閃避)">動作 / 割草 (重視打擊感與閃避)</option>
-                    <option value="Platformer平台跳躍 (重視重力與跳躍手感)">平台跳躍 (重視重力與跳躍手感)</option>
-                    <option value="RPG角色扮演 (重視數值與狀態)">RPG 角色扮演 (重視數值與狀態)</option>
-                    <option value="Idle放置掛機 (重視時間收益演算法)">放置 / 掛機 (重視時間收益演算法)</option>
-                    <option value="TowerDefense塔防 (重視尋路與範圍判定)">塔防策略 (重視尋路與範圍判定)</option>
-                    <option value="Puzzle益智解謎 (重視網格與邏輯)">益智 / 解謎 (重視網格與邏輯)</option>
+                    <option value="action">動作 / 割草 (精準 Hitbox、無敵幀、高頻率打擊)</option>
+                    <option value="platformer">平台跳躍 (嚴謹重力、跳躍緩衝、土狼時間)</option>
+                    <option value="rpg">RPG 角色扮演 (屬性計算、狀態異常、經驗值對數曲線)</option>
+                    <option value="idle">放置 / 掛機 (大數值運算、離線時間 delta 計算、指數升級)</option>
+                    <option value="tower_defense">塔防策略 (網格尋路、索敵半徑、多重投射物追蹤)</option>
+                    <option value="puzzle">益智解謎 (陣列狀態驗證、撤銷機制、明確視覺反饋)</option>
                 </select>
             </div>
             <div class="select-row">
-                <span>視覺風格</span>
+                <span>視覺風格 (內建渲染語法與特效)</span>
                 <select id="s_art">
-                    <option value="PixelArt像素風 (乾淨銳利)">復古像素風 (Pixel Art, 乾淨銳利)</option>
-                    <option value="Cyberpunk霓虹 (高對比發光)">賽博龐克 (Neon, 高對比發光效果)</option>
-                    <option value="Minimalist極簡幾何 (流暢形變)">極簡幾何 (Minimalist, 流暢形變)</option>
-                    <option value="Anime日系動漫 (明亮色彩)">日系動漫風 (Anime, 明亮色彩)</option>
-                </select>
-            </div>
-            <div class="select-row">
-                <span>難度曲線設計 (Pacing)</span>
-                <select id="s_difficulty">
-                    <option value="隨時間線性遞增 (平穩)">隨時間線性遞增 (平穩)</option>
-                    <option value="指數型暴增 (生存類適用)">指數型暴增 (生存類適用)</option>
-                    <option value="波浪型 (有高潮與喘息期)">波浪型 (有高潮與喘息期)</option>
+                    <option value="pixel">像素風 Pixel Art (禁止模糊、塊狀幾何、復古調色盤)</option>
+                    <option value="cyberpunk">賽博龐克 Cyberpunk (高光溢出、霓虹陰影、科技 UI)</option>
+                    <option value="wuxia">中式古風/武俠 (水墨粒子、毛筆字體、冷暖國風色彩)</option>
+                    <option value="anime">日系動漫 Anime (高飽和度、速度線、卡通渲染感)</option>
+                    <option value="minimalist">極簡風 Minimalist (流暢過渡、無框 UI、幾何圖形)</option>
+                    <option value="dark_fantasy">暗黑奇幻 Dark Fantasy (低明度、血跡飛濺、壓抑光影)</option>
                 </select>
             </div>
         </div>
 
-        <div class="feature-box juice">
+        <div class="feature-box locked">
+            <label class="group-title">🛡️ 強制遊戲流程與 UI (Mandatory Flow)</label>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> 鎖定：起始標題畫面 (Start Screen)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> 鎖定：遊戲大廳與升級選單 (Lobby / Upgrades)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> 鎖定：圖文並茂的遊戲說明 (How to Play)</div>
+            <div class="checkbox-item"><input type="checkbox" checked disabled> 鎖定：重置不需 F5 的結算畫面 (Game Over)</div>
+            <p style="font-size: 0.8rem; color: #6fc; margin-top: 5px;">* AI 將被強制要求實作嚴謹的狀態機切換，禁止一載入就開始遊戲。</p>
+        </div>
+
+        <div class="feature-box">
             <label class="group-title">🧃 極致手感與反饋 (Game Juice)</label>
             <div class="checkbox-item"><input type="checkbox" id="j_particles" checked> 粒子特效 (死亡爆裂/衝刺殘影)</div>
             <div class="checkbox-item"><input type="checkbox" id="j_shake" checked> 螢幕震動 (受擊/暴擊時 Camera Shake)</div>
-            <div class="checkbox-item"><input type="checkbox" id="j_hitstop" checked> 頓幀/卡肉感 (Hitstop - 擊中瞬間微停頓)</div>
-            <div class="checkbox-item"><input type="checkbox" id="j_easing"> 平滑過渡 (使用 Lerp/Easing 讓移動不生硬)</div>
-            <div class="checkbox-item"><input type="checkbox" id="j_coyote"> 寬容判定 (Coyote Time - 邊緣延遲跳躍判定)</div>
-            <div class="checkbox-item"><input type="checkbox" id="j_sfx" checked> 觸覺化音效 (精準的 UI 點擊與打擊音效)</div>
-        </div>
-
-        <div class="feature-box tech">
-            <label class="group-title">⚙️ 嚴謹底層與狀態管理 (Architecture)</label>
-            <div class="checkbox-item"><input type="checkbox" id="t_delta" checked disabled> 強制使用 Delta Time (幀率獨立, 拒絕快慢不一)</div>
-            <div class="checkbox-item"><input type="checkbox" id="t_state" checked disabled> 嚴格狀態機 (StartMenu -> Playing -> GameOver)</div>
-            <div class="checkbox-item"><input type="checkbox" id="t_restart" checked disabled> 遊戲重置邏輯 (GameOver後無需F5即可滿血重來)</div>
-            <div class="checkbox-item"><input type="checkbox" id="t_pool" checked> 物件池 (Object Pooling) - 防止滿屏子彈卡頓</div>
-            <div class="checkbox-item"><input type="checkbox" id="t_save"> LocalStorage 狀態存檔</div>
+            <div class="checkbox-item"><input type="checkbox" id="j_hitstop" checked> 頓幀/卡肉感 (Hitstop - 增加打擊重量感)</div>
+            <div class="checkbox-item"><input type="checkbox" id="j_sfx" checked> 觸覺化 Web Audio 音效 (點擊/打擊)</div>
         </div>
         
         <div class="feature-box">
-            <label class="group-title">🕹️ 控制與適配 (Controls & UI)</label>
+            <label class="group-title">🕹️ 操作、適配與擴充 (Controls & Features)</label>
             <div class="select-row">
                 <span>操作邏輯 (Input)</span>
                 <select id="s_input">
-                    <option value="全端適配 (PC鍵鼠 + Mobile虛擬搖桿，需繪製UI)">PC鍵鼠 + 手機虛擬搖桿 (需繪製 UI)</option>
-                    <option value="滑鼠/手指跟隨 (跟隨游標移動)">滑鼠/手指絕對跟隨 (拖曳操作)</option>
+                    <option value="全端適配 (PC WASD/鍵鼠 + Mobile虛擬搖桿，必須繪製搖桿 UI)">全端適配 (PC鍵鼠 + 手機虛擬搖桿UI)</option>
+                    <option value="滑鼠/手指絕對跟隨 (拖曳操作)">滑鼠/手指絕對跟隨 (拖曳操作)</option>
                     <option value="純點擊/觸控 (Point & Click)">純點擊/觸控 (節奏/解謎類)</option>
                 </select>
             </div>
             <div class="select-row">
                 <span>螢幕方向</span>
                 <select id="s_orient">
-                    <option value="響應式 (Canvas 永遠填滿視窗)">響應式 (Canvas 永遠填滿視窗)</option>
-                    <option value="強制橫屏佈局">強制橫屏 (Landscape)</option>
-                    <option value="強制直屏佈局">強制直屏 (Portrait)</option>
+                    <option value="響應式 (Canvas 自動填滿視窗，按比例縮放)">自適應大小 (Responsive Canvas)</option>
+                    <option value="強制橫屏 (Landscape) 佈局">強制橫屏 (Landscape)</option>
+                    <option value="強制直屏 (Portrait) 佈局">強制直屏 (Portrait)</option>
                 </select>
             </div>
-            <div class="checkbox-item"><input type="checkbox" id="f_html" checked disabled> 強制輸出單一 HTML 檔案 (即貼即玩)</div>
+            <div class="checkbox-item"><input type="checkbox" id="f_save" checked> LocalStorage 存檔機制 (保留最高分/貨幣)</div>
         </div>
     </div>
 
-    <button class="generate-btn" onclick="generate()">🚀 生成高精準度開發指令</button>
+    <button class="generate-btn" onclick="generate()">🚀 產出超高精度 AI 開發指令</button>
 
     <div class="output-box">
         <button class="copy-btn" onclick="copy()">複製提示詞</button>
@@ -272,60 +264,78 @@
 </div>
 
 <script>
+    // 專業級遊戲類型定義字典
+    const genreDict = {
+        "action": "【動作/割草】必須實作：精準的碰撞判定框 (Hitbox vs Hurtbox分離)、玩家受擊後的無敵幀 (i-frames)、敵方攻擊前的視覺預警 (Telegraphing)、以及依賴 deltaTime 的平滑加速度與摩擦力計算。",
+        "platformer": "【平台跳躍】必須實作：自定義重力加速度 (Gravity)、起跳初速度、跳躍最高點的滯空微調 (Jump Apex)、跳躍緩衝 (Jump Buffering)、土狼時間 (Coyote Time - 離開平台邊緣 0.1 秒內仍可跳躍)、以及防卡牆的 AABB 碰撞解析。",
+        "rpg": "【RPG角色扮演】必須實作：獨立的屬性物件 (HP, MP, ATK, DEF)、攻防結算公式 (含浮動傷害與暴擊機率)、經驗值對數型成長曲線、以及清晰的狀態更新渲染邏輯。",
+        "idle": "【放置/掛機】必須實作：將時間與收益掛鉤的演算法，使用 Date.now() 計算離線 Delta 收益。升級花費必須實作指數型成長公式，數值顯示需實作單位格式化 (如 1.5K, 2.3M)，確保遊戲不需持續點擊也能自我運轉。",
+        "tower_defense": "【塔防策略】必須實作：網格化 (Grid-based) 座標系統、敵人的路徑點尋路邏輯 (Waypoints)、塔的索敵半徑判定 (Distance check)、以及追蹤型或範圍爆破型投射物的物理計算。",
+        "puzzle": "【益智解謎】必須實作：狀態陣列管理 (State Array)、操作合法性驗證 (Validation)、明確的視覺狀態切換動畫、以及判定「勝利條件完全吻合」的邏輯迴圈。"
+    };
+
+    // 專業級視覺風格定義字典
+    const artDict = {
+        "pixel": "【像素風 Pixel Art】技術要求：Canvas 必須設置 \`imageSmoothingEnabled = false\` 或使用 CSS \`image-rendering: pixelated\`。圖形繪製請使用 \`fillRect\` 組成塊狀幾何，並限制使用 8-bit 或 16-bit 復古調色盤，嚴禁出現平滑漸層或抗鋸齒邊緣。",
+        "cyberpunk": "【賽博龐克 Cyberpunk】技術要求：背景必須是深色 (如 #0a0a1a)，核心圖形與 UI 必須使用 \`shadowBlur\` 與 \`shadowColor\` 創造高對比的霓虹發光效果 (Neon Glow)，字體優先使用等寬或科技感字型，並加入掃描線或故障藝術 (Glitch) 視覺元素。",
+        "wuxia": "【中式古風】技術要求：調色盤使用中國傳統色彩 (如硃砂紅、石青、水墨黑)。UI 邊框應帶有留白或捲軸感。粒子特效應實作為類似墨滴或桃花瓣的飄散效果，文字排版盡量呈現古典雅致的韻味。",
+        "anime": "【日系動漫 Anime】技術要求：使用高飽和度、明亮的色彩配置。動作發生時，實作全螢幕的「速度線 (Speed Lines)」或「集中線」特效。血條、UI 應該帶有斜角切割、動感強烈的設計語言。",
+        "minimalist": "【極簡風 Minimalist】技術要求：畫面以乾淨的背景與高對比的幾何圖形為主。完全移除 UI 邊框，所有狀態改變必須依賴平滑的 \`Lerp\` 過渡動畫。色彩限制在 3-4 種主色的組合。",
+        "dark_fantasy": "【暗黑奇幻】技術要求：畫面整體明度降低，使用大量黑、深灰、血紅與暗紫色。光影呈現壓抑感 (可利用 Canvas \`globalCompositeOperation\` 處理光暈)。UI 應具備破敗、金屬或石雕質感的視覺代碼實作。"
+    };
+
     function generate() {
-        const task = document.getElementById('taskInput').value || "請設計一款具備完整勝負條件的遊戲";
+        const task = document.getElementById('taskInput').value || "請設計一款具備完整迴圈的遊戲";
         
-        const genre = document.getElementById('s_genre').value;
-        const art = document.getElementById('s_art').value;
-        const diff = document.getElementById('s_difficulty').value;
+        const genreKey = document.getElementById('s_genre').value;
+        const artKey = document.getElementById('s_art').value;
         const input = document.getElementById('s_input').value;
         const orient = document.getElementById('s_orient').value;
 
-        let p = `# Role: 頂級遊戲程式架構師與 Game Feel 設計專家\n`;
-        p += `你不是在寫一段會動的程式碼，你是在開發一款**具備極致手感、完整狀態閉環、且效能優異的商業級遊戲原型**。\n\n`;
+        let p = `# Role: 頂尖遊戲引擎工程師與 UX 設計專家\n`;
+        p += `你正在開發一款**具備完整商業化流程與極致手感的 HTML5 遊戲**。請你放棄「只寫個概念範例」的思維，嚴格遵守以下所有架構指令。\n\n`;
 
-        p += `## 1. 【核心玩法與目標 (Core Loop)】\n`;
-        p += `- **描述**：${task}\n`;
-        p += `- **類型**：${genre}\n`;
-        p += `- **難度曲線**：${diff}\n`;
-        p += `> **[精準要求]**：必須明確定義「如何得分/升級」以及「什麼情況下會 Game Over」。絕對禁止漫無目的的無限迴圈。\n\n`;
+        p += `## 1. 【核心目標與玩法】\n`;
+        p += `- **核心描述**：${task}\n`;
+        p += `- **操作方案**：${input}\n`;
+        p += `- **佈局要求**：${orient}\n\n`;
 
-        p += `## 2. 【嚴格的技術規範 (CRITICAL TECH SPECS)】\n`;
-        p += `你必須直接輸出「單一且完整可用」的 .html 檔案（HTML/CSS/JS 全寫在一起）。**嚴禁省略任何程式碼（如 // ...省略），必須一貼上就能完美運行。**\n`;
-        p += `- **物理與時間**：必須使用 \`requestAnimationFrame\` 並導入 \`deltaTime\` 進行所有位移與冷卻計算，確保在 30Hz 或 144Hz 螢幕上速度一致。\n`;
-        p += `- **狀態機 (State Machine)**：必須實作明確的遊戲狀態：\`MENU\` (開始畫面) -> \`PLAYING\` (遊戲中) -> \`GAMEOVER\` (結算畫面)。\n`;
-        p += `- **重生機制**：在 Game Over 畫面必須有「重新開始」按鈕，點擊後需精準重置所有變數 (血量、分數、敵人陣列)，**嚴禁使用 location.reload()，必須從程式邏輯重置**。\n`;
-        if(document.getElementById('t_pool').checked) p += `- **效能**：對於頻繁生成的物件 (如子彈/敵人)，必須實作「物件池 (Object Pooling)」。\n`;
-        if(document.getElementById('t_save').checked) p += `- **存檔**：使用 LocalStorage 儲存最高分或升級狀態。\n\n`;
+        p += `## 2. 【強制 UI 與遊戲狀態機 (MANDATORY GAME FLOW)】\n`;
+        p += `> **[嚴重警告]**：遊戲載入後，**絕對禁止**直接開始遊玩。你必須實作嚴謹的狀態機 (State Machine)，透過變數 (例如 \`gameState\`) 控制以下四大場景的切換：\n`;
+        p += `1. **[Start Screen 起始畫面]**：大字體展示遊戲標題，並提供明顯的「點擊開始 (Press Start)」按鈕。\n`;
+        p += `2. **[Lobby / 大廳與說明介面]**：這非常重要！玩家進入大廳後，畫面上必須有一個區塊清楚顯示**「遊戲說明 (How to Play)」**（包含操作按鍵、如何得分、如何獲勝/失敗）。大廳也可放置「開始遊戲」按鈕或「升級/商店」區塊。\n`;
+        p += `3. **[Playing 遊戲中]**：核心玩法執行區，包含 UI (血量、分數)。\n`;
+        p += `4. **[Game Over 結算畫面]**：顯示最終分數/結果，並提供「返回大廳 (Return to Lobby)」按鈕。**重置遊戲時必須清空所有數據陣列與狀態變數，嚴禁使用 \`location.reload()\`。**\n\n`;
 
-        p += `## 3. 【極致遊戲手感 (Game Juice & Feedback)】\n`;
-        p += `為了避免遊戲體驗極差，你必須在互動中加入以下反饋機制：\n`;
-        if(document.getElementById('j_particles').checked) p += `- **粒子系統**：物件死亡、相撞或得分時，必須生成動態散落的粒子特效 (Particle Burst)。\n`;
-        if(document.getElementById('j_shake').checked) p += `- **螢幕震動**：玩家受擊或產生暴擊時，對 Canvas 套用短暫的隨機偏移 (Screen Shake)。\n`;
-        if(document.getElementById('j_hitstop').checked) p += `- **頓幀 (Hitstop)**：發生強力打擊時，將遊戲時間暫停幾毫秒，增加打擊重量感。\n`;
-        if(document.getElementById('j_easing').checked) p += `- **平滑過渡**：UI 彈出、血條扣減或視角跟隨，請使用 Lerp (線性插值) 使動畫平滑，不要瞬間變化。\n`;
-        if(document.getElementById('j_coyote').checked) p += `- **寬容判定**：提供玩家些許容錯空間 (如邊緣掉落前 0.1 秒仍可跳躍，或稍微擴大攻擊判定框而縮小受擊判定框)。\n`;
-        if(document.getElementById('j_sfx').checked) p += `- **音效反饋**：使用 Web Audio API 生成基礎的合成音效 (嗶聲、爆炸聲、得分聲)，綁定在每個有效動作上。\n\n`;
+        p += `## 3. 【底層技術約束 (Tech Constraints)】\n`;
+        p += `- **直接輸出完整代碼**：請輸出單一且完整的 \`.html\` 檔案，包含內聯的 \`<style>\` 與 \`<script>\`，**嚴禁使用 \`// 此處省略\` 或任何代碼截斷**。產出的代碼必須能直接在瀏覽器雙擊運行。\n`;
+        p += `- **影格獨立性**：所有位移、冷卻、動畫，必須基於 \`requestAnimationFrame\` 與 \`deltaTime\` 進行運算，確保在不同更新率螢幕上速度一致。\n`;
+        p += `- **專業機制要求**：\n`;
+        p += `  ${genreDict[genreKey]}\n\n`;
 
-        p += `## 4. 【控制與視覺適配 (Input & Visuals)】\n`;
-        p += `- **視覺風格**：${art}。請利用 Canvas API 或 CSS 實作相應的調色盤與繪圖邏輯。\n`;
-        p += `- **操作方案**：${input}。若涉及虛擬搖桿，必須在螢幕上繪製出視覺 UI 並正確對應觸控事件 (Touch Events)。\n`;
-        p += `- **佈局**：${orient}。確保 Canvas 在視窗大小改變 (resize) 時能正確自適應並重算座標。\n\n`;
+        p += `## 4. 【美術風格與渲染指令 (Art & Rendering)】\n`;
+        p += `- ${artDict[artKey]}\n\n`;
 
-        p += `## 5. 【AI 內部 QA 壓力測試 (Pre-Flight Check)】\n`;
-        p += `在生成代碼前，請自我審查：\n`;
-        p += `1. **手感檢測**：玩家移動會不會像滑冰？(是否設定了合理的摩擦力/阻力與加速度？)\n`;
-        p += `2. **死亡檢測**：玩家死後，畫面是否會暫停並正確顯示 Game Over 介面？點擊重啟後，上一局的殘留子彈是否已被清空？\n`;
-        p += `3. **幀率檢測**：你的 \`x += speed\` 是否都乘上了 \`deltaTime\`？\n\n`;
+        p += `## 5. 【極致手感反饋 (Game Juice)】\n`;
+        p += `必須在互動中實作以下增強手感的特效：\n`;
+        if(document.getElementById('j_particles').checked) p += `- **動態粒子**：得分、擊殺、受擊時生成陣列管理的飛散粒子 (Particles)。\n`;
+        if(document.getElementById('j_shake').checked) p += `- **螢幕震動**：關鍵事件 (如扣血/爆炸) 觸發時，透過 \`ctx.translate\` 實作隨機偏移的 Screen Shake。\n`;
+        if(document.getElementById('j_hitstop').checked) p += `- **頓幀 (Hitstop)**：發生強力碰撞時，令更新邏輯短停頓數十毫秒，增加打擊重量感。\n`;
+        if(document.getElementById('j_sfx').checked) p += `- **音效生成**：使用 \`AudioContext\` API 編寫簡單的合成音頻函數 (Beep, Explosion, Coin)，綁定在點擊與重要事件上。\n\n`;
 
-        p += `**檢驗通過後，請直接輸出完整的 <html> 程式碼。**`;
+        if(document.getElementById('f_save').checked) {
+            p += `## 6. 【資料持久化 (Data Save)】\n`;
+            p += `- 使用 \`localStorage\` 自動存儲玩家的最高分 (High Score) 或是大廳累積資源，並在載入時自動讀取。\n\n`;
+        }
+
+        p += `**請確認理解上述所有架構與狀態機要求後，直接以 \`\`\`html 代碼區塊輸出完美的遊戲原始碼。**`;
 
         document.getElementById('outputArea').innerText = p;
     }
 
     function copy() {
         const t = document.getElementById('outputArea').innerText;
-        navigator.clipboard.writeText(t).then(() => alert('精準指令已複製！請貼給 AI 開始開發真正的遊戲！'));
+        navigator.clipboard.writeText(t).then(() => alert('全能神級提示詞已複製！這次 AI 生成出來絕對是有模有樣的完整遊戲！'));
     }
 </script>
 
